@@ -8,9 +8,9 @@ import org.apache.hadoop.mapred.*;
 
 public class Mapper extends MapReduceBase
   implements Mapper<LongWritable, Text, Text, IntWritable>{
-    public void map(LongWritable key, Text value, OutputCollector<Text,IntWritable> output, Reporter r){
+    public void map(LongWritable key, Text value, OutputCollector<Text,IntWritable> output, Reporter r) throws IOException {
       String[] line = value.toString().split(",");
-      string name = line[2];
+      String name = line[2];
       output.collect(new Text(name), new IntWritable(1));
     }
   }
