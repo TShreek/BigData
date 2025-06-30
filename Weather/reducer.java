@@ -1,22 +1,25 @@
-package Weather;
+package weather;
 
 import java.util.*;
 import java.io.*;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapred.*;
 
-public class reducer extends MapReduceBase implements Reducer<Text, DoubleWritable, Text, DoubleWritable> {
-  public void reduce(Text key, Iterator<DoubleWritable> values, OutputCollector<Text, DoubleWritable> output, Reporter r) throws IOException {
-    double min = Double.MAX_VALUE;
-    double max = Double.MIN_VALUE;
-
-    while (values.hasNext()) {
-      double temp = values.next().get();
-      min = Math.min(min, temp);
-      max = Math.max(max, temp);
+public class Reducer extends MapReduceBase
+  implements Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+    public void reduce(
+      Text key,
+      Iterator<DoubleWritable> values,
+      OutputCollector<Text, DoubleWritable> output,
+      Reporter r
+    ) throws IOException {
+      double max=-9999.0,min=9999.0;
+      while(values.hasNext()){
+        double temp = values.next().get();
+        max = Math.max(temp, max);
+        min = Math.min(temp, min);
+      }
+      output.collect(new Text ("Min temp at " + key), new DoubleWritable(min));
+      output.collect(new Text("max temp at " + key), new DoubleWritable(max));
     }
-
-    output.collect(new Text("Max temp at " + key.toString()), new DoubleWritable(max));
-    output.collect(new Text("Min temp at " + key.toString()), new DoubleWritable(min));
   }
-}
