@@ -14,10 +14,10 @@ public class driver{
     conf.setReducerClass(reducer.class);
 
     conf.setOutputKeyClass(Text.class);
-    conf.setOutputValueClass(DoubleWritable.class);
+    conf.setOutputValueClass(IntWritable.class);
 
     FileInputFormat.addInputPath(conf, new Path(args[0]));
-    FileOutputFormat.setOutputPath(conf, new Path(args[1));
+    FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 
     JobClient.runJob(conf);
   }
